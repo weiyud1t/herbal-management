@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+  <link rel="shortcut icon" href="#" type="image/png">
+
+  <title>Dynamic Table</title>
+
+  <!--dynamic table-->
+  <link href="js/advanced-datatable/css/demo_page.css" rel="stylesheet" />
+  <link href="js/advanced-datatable/css/demo_table.css" rel="stylesheet" />
+  <link rel="stylesheet" href="js/data-tables/DT_bootstrap.css" />
+
+    <link th:include="common :: commonhead">
+
+    <style>
+        .error-style {
+            color: red;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+    </style>
+
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <!-- left side start-->
+    <div class="left-side sticky-left-side" >
+
+        <!--logo and iconic logo start-->
+        <div class="logo">
+            <a th:href="@{/main}"><img src="images/logo_icon.png" alt=""></a>
+        </div>
+
+        <div class="left-side-inner">
+
+            <ul class="nav nav-pills nav-stacked custom-nav">
+                <li><a th:href="@{/main}">
+                    <span>主页</span></a>
+                </li>
+                <li th:if="${session.loginUser == 'admin'}"><a th:href="@{/userManagements}"><i class="fa fa-bullhorn"></i><span>用户管理</span></a></li>
+                <li th:unless="${session.loginUser == 'admin'}"><a th:href="@{/personalMassage}"><i class="fa fa-bullhorn"></i><span>个人信息</span></a></li>
+                <li class="menu-list nav-active"><a href=""><i class="fa fa-cogs"></i> <span>中药材管理</span></a>
+                    <ul class="sub-menu-list">
+                        <li><a th:href="@{/search(pn=1)}"> 药材信息管理</a></li>
+                        <li class="active"><a th:href="@{/function(set=0)}"> 增改药材信息</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!--sidebar nav end-->
+
+        </div>
+    </div>
+    <!-- left side end-->
+    
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <!-- header section start-->
+        <div th:replace="common :: headermenu"></div>
+        <!-- header section end-->
+
+        <!-- page heading start-->
+        <div class="page-heading">
+            <h3>
+                对药材信息进行增改
+            </h3>
+            <ul class="breadcrumb">
+                <li>
+                    <a th:href="@{/main}">主页</a>
+                </li>
+                <li class="active">中药材管理</li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start-->
+        <div class="wrapper">
+        <div class="row">
+        <div class="col-sm-12">
+        <section class="panel">
+            <section class="panel">
+                <header class="panel-heading custom-tab dark-tab">
+                    <ul class="nav nav-tabs">
+                        <li th:class="${control==0 ? 'active':''}">
+                            <a href="#home2" data-toggle="tab">添加药材信息</a>
+                        </li>
+                        <li th:class="${control==1 ? 'active':''}">
+                            <a href="#about2" data-toggle="tab">修改药材信息</a>
+                        </li>
+                    </ul>
+                </header>
+                <div class="panel-body">
+                    <div class="tab-content">
+                        <div class="tab-pane" id="home2" >
+                            <div class="col-lg-6">
+                                <section class="panel">
+                                    <div class="panel-body">
+                                        <form role="form" th:action="@{/addHerb}" method="post" id="addHerbForm">
+                                            <div class="form-group">
+                                                <label>
+                                                    <header class="panel-heading">药材名称</header>
+                                                </label>
+                                                <input type="text" name="herbName" class="form-control" id="herbName" placeholder="请输入药材名称">
+                                                <div id="herbNameError" class="text-danger"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>
+                                                    <header class="panel-heading">功效</header>
+                                                </label>
+                                                <textarea name="effects" class="form-control" id="effects" placeholder="请输入功效"></textarea>
+                                                <div id="effectsError" class="text-danger"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>
+                                                    <header class="panel-heading">产地</header>
+                                                </label><br>
+                                                <select name="origin" id="origin">
+                                                    <option value="">----请选择----</option>
+                                                    <option value="云南">云南</option>
+                                                    <option value="广西">广西</option>
+                                                    <option value="贵州">贵州</option>
+                                                    <option value="甘肃">甘肃</option>
+                                                    <option value="山东">山东</option>
+                                                    <option value="黑龙江">黑龙江</option>
+                                                </select>
+                                                <div id="originError" class="text-danger"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>
+                                                    <header class="panel-heading">库存数量</header>
+                                                </label>
+                                                <input type="number" name="stockQuantity" class="form-control" id="stockQuantity" placeholder="请输入库存数量">
+                                                <div id="stockQuantityError" class="text-danger"></div>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary" id="submitButton" disabled>添加</button>
+                                        </form>
+                                        <script>
+                                            // 禁用提交按钮
+                                            document.getElementById("submitButton").disabled = true;
+
+                                            // 增加一个变量来跟踪药材名称是否已存在
+                                            let isHerbNameValid = true; // 默认假设药材名称是有效的
+
+                                            function checkFormValidity() {
+                                                // 获取所有输入框和选择框的值
+                                                const herbName = document.getElementById("herbName").value.trim();
+                                                const effects = document.getElementById("effects").value.trim();
+                                                const origin = document.getElementById("origin").value;
+                                                const stockQuantity = document.getElementById("stockQuantity").value.trim();
+
+                                                // 正则表达式，用于检查库存数量是否为正整数
+                                                const positiveIntegerRegex = /^[1-9]\d*$/;
+
+                                                // 初始设定所有输入都是有效的
+                                                let isAllValid = true;
+
+                                                // 检查药材名称
+                                                if (!herbName || !isHerbNameValid) { // 检查药材名称是否为空或是否已存在
+                                                    document.getElementById("herbNameError").innerText = !herbName ? "药材名称不能为空" : "药材名称已存在";
+                                                    isAllValid = false;
+                                                } else {
+                                                    document.getElementById("herbNameError").innerText = "";
+                                                }
+
+                                                // 检查功效
+                                                if (!effects) {
+                                                    document.getElementById("effectsError").innerText = "功效不能为空";
+                                                    isAllValid = false;
+                                                } else {
+                                                    document.getElementById("effectsError").innerText = "";
+                                                }
+
+                                                // 检查产地
+                                                if (!origin) {
+                                                    document.getElementById("originError").innerText = "请选择产地";
+                                                    isAllValid = false;
+                                                } else {
+                                                    document.getElementById("originError").innerText = "";
+                                                }
+
+                                                // 检查库存数量
+                                                if (!stockQuantity) {
+                                                    document.getElementById("stockQuantityError").innerText = "库存数量不能为空";
+                                                    isAllValid = false;
+                                                } else if (!positiveIntegerRegex.test(stockQuantity)) {
+                                                    document.getElementById("stockQuantityError").innerText = "库存数量必须是正整数";
+                                                    isAllValid = false;
+                                                } else {
+                                                    document.getElementById("stockQuantityError").innerText = "";
+                                                }
+
+                                                // 最后检查所有输入是否有效
+                                                document.getElementById("submitButton").disabled = !isAllValid;
+                                            }
+
+                                            // 对每个输入框和选择框添加失去焦点的事件监听器
+                                            ["herbName", "effects", "origin", "stockQuantity"].forEach(id => {
+                                                document.getElementById(id).addEventListener("blur", function() {
+                                                    if (id === "herbName") {
+                                                        // 特别针对药材名称进行数据库存在性检查
+                                                        const name = document.getElementById("herbName").value.trim();
+                                                        if (name) {
+                                                            fetch(`/checkHerbName?name=${name}`)
+                                                                .then(response => response.json())
+                                                                .then(data => {
+                                                                    if (data.exists) {
+                                                                        document.getElementById("herbNameError").innerText = "药材名称已存在";
+                                                                        isHerbNameValid = false; // 设置药材名称为无效
+                                                                        document.getElementById("submitButton").disabled = true;
+                                                                    } else {
+                                                                        document.getElementById("herbNameError").innerText = "";
+                                                                        isHerbNameValid = true; // 设置药材名称为有效
+                                                                        checkFormValidity(); // 重新检查表单的有效性
+                                                                    }
+                                                                });
+                                                        }
+                                                    } else {
+                                                        checkFormValidity(); // 对其他输入进行有效性检查
+                                                    }
+                                                });
+                                            });
+                                        </script>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="about2" >
+                            <div class="col-lg-6">
+                                <section class="panel">
+                                    <div class="panel-body">
+                                        <form role="form" th:action="@{/updateHerb}" method="post" id="updateHerbForm">
+                                            <div class="form-group">
+                                                <label for="updateHerbId">id</label>
+                                                <input type="number" name="id" id="updateHerbId" class="form-control" placeholder="请输入药材id">
+                                                <div class="error-message" id="idErrorMessage"></div>
+                                            </div>
+                                            <div id="updateAdditionalFields" style="display: none;">
+                                                <div class="form-group">
+                                                    <label for="updateHerbName">药材名称</label>
+                                                    <input type="text" name="herbName" id="updateHerbName" class="form-control" placeholder="请输入药材名称">
+                                                    <div class="error-message" id="nameErrorMessage"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="updateEffects">功效</label>
+                                                    <textarea name="effects" id="updateEffects" class="form-control" placeholder="请输入功效"></textarea>
+                                                    <div class="error-message" id="effectsErrorMessage"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="updateOrigin">产地</label>
+                                                    <select name="origin" id="updateOrigin" class="form-control">
+                                                        <option value="">----请选择----</option>
+                                                        <option value="云南">云南</option>
+                                                        <option value="广西">广西</option>
+                                                        <option value="贵州">贵州</option>
+                                                        <option value="甘肃">甘肃</option>
+                                                        <option value="山东">山东</option>
+                                                        <option value="黑龙江">黑龙江</option>
+                                                    </select>
+                                                    <div class="error-message" id="originErrorMessage"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="updateStockQuantity">库存数量</label>
+                                                    <input type="number" name="stockQuantity" id="updateStockQuantity" class="form-control" placeholder="请输入库存数量">
+                                                    <div class="error-message" id="quantityErrorMessage"></div>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">修改</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </section>
+            <script>
+                // 根据 control 值激活相应的标签页
+                function activateTab(control) {
+                    var homeTab = document.getElementById('home2');
+                    var aboutTab = document.getElementById('about2');
+                    var homeLink = document.querySelector('a[href="#home2"]');
+                    var aboutLink = document.querySelector('a[href="#about2"]');
+
+                    if (control == 0) {
+                        homeTab.classList.add('active', 'in');
+                        homeLink.parentNode.classList.add('active');
+                    } else if (control == 1) {
+                        aboutTab.classList.add('active', 'in');
+                        aboutLink.parentNode.classList.add('active');
+                    }
+                }
+                // 获取服务器传递的 control 值并激活相应的标签页
+                var control = [[${control}]];
+                document.addEventListener('DOMContentLoaded', function() {
+                    activateTab(control);
+                });
+            </script>
+        </div>
+        </div>
+
+        </div>
+        <!--body wrapper end-->
+
+        <!--footer section start-->
+        <div th:replace="common :: #footer"></div>
+        <!--footer section end-->
+
+    </div>
+    <!-- main content end-->
+</section>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<div th:replace="common :: #commonscript"></div>
+
+<!--dynamic table-->
+<script type="text/javascript" language="javascript" src="js/advanced-datatable/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="js/data-tables/DT_bootstrap.js"></script>
+<script>
+    $(document).ready(function() {
+        var herbId = sessionStorage.getItem('herbId');
+        if (herbId) {
+            $('#updateHerbId').val(herbId);
+            fetchHerbData(herbId);
+        }
+        $('#updateHerbId').blur(function() {
+            var inputHerbId = $(this).val();
+            if(inputHerbId) {
+                fetchHerbData(inputHerbId);
+            }
+        });
+
+        $('#updateEffects').blur(function() {
+            validateInput(); // 当功效输入框失去焦点时也进行验证
+        });
+
+        $('input, select').not('#updateHerbId').blur(function() {
+            validateInput(); // 除了药材ID输入框外的其他所有输入框失去焦点时的验证
+        });
+    });
+
+    function fetchHerbData(herbId) {
+        $.ajax({
+            url: '/getHerbById',
+            type: 'GET',
+            data: {id: herbId},
+            success: function(data) {
+                $('#updateErrorMessage').text('').hide();
+                // $('#updateHerbName').val(data.herbName).prop('disabled', true);
+                $('#updateHerbName').val(data.herbName).prop('readonly', true); // 将 disabled 改为 readonly
+                $('#updateEffects').val(data.effects);
+                $('#updateOrigin').val(data.origin);
+                $('#updateStockQuantity').val(data.stockQuantity);
+                $('#updateHerbId').prop('disabled', true);
+                $('#updateAdditionalFields').show();
+                sessionStorage.removeItem('herbId');
+                validateInput(); // 验证输入是否有效
+            },
+            error: function(xhr, status, error) {
+                $('#updateErrorMessage').text("错误: " + xhr.responseJSON.error).show();
+                $('#updateAdditionalFields').hide();
+                $('#idErrorMessage').text("找不到该ID对应的药材，请重新输入").show();
+            }
+        });
+    }
+
+    function validateInput() {
+        var isValid = true;
+        var effects = $('#updateEffects').val();
+        var origin = $('#updateOrigin').val();
+        var stockQuantity = $('#updateStockQuantity').val();
+        var stockQuantityRegex = /^[1-9]\d*$/;
+
+        // 功效验证
+        if (!effects) {
+            $('#effectsErrorMessage').text('请输入功效').show().addClass('error-style');
+            isValid = false;
+        } else {
+            $('#effectsErrorMessage').text('').hide().removeClass('error-style');
+        }
+
+        // 产地验证
+        if (!origin) {
+            $('#originErrorMessage').text('请选择产地').show().addClass('error-style');
+            isValid = false;
+        } else {
+            $('#originErrorMessage').text('').hide().removeClass('error-style');
+        }
+
+        // 库存数量验证
+        if (!stockQuantityRegex.test(stockQuantity)) {
+            $('#quantityErrorMessage').text('库存数量必须是正整数').show().addClass('error-style');
+            isValid = false;
+        } else {
+            $('#quantityErrorMessage').text('').hide().removeClass('error-style');
+        }
+
+        // 根据验证结果启用/禁用修改按钮
+        $('button[type="submit"]').prop('disabled', !isValid);
+    }
+</script>
+
+
+</body>
+</html>

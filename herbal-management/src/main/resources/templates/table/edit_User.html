@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+  <link rel="shortcut icon" href="#" type="image/png">
+
+  <title>Form Layouts</title>
+    <style>
+        .error-message {
+            color: red; /* 将错误信息文字颜色设为红色 */
+        }
+    </style>
+
+    <link th:include="common :: commonhead">
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <!-- left side start-->
+    <div class="left-side sticky-left-side" >
+
+        <!--logo and iconic logo start-->
+        <div class="logo">
+            <a th:href="@{/main}"><img src="images/logo_icon.png" alt=""></a>
+        </div>
+
+        <div class="left-side-inner">
+
+            <ul class="nav nav-pills nav-stacked custom-nav">
+                <li><a th:href="@{/main}">
+                    <span>主页</span></a>
+                </li>
+                <li th:if="${session.loginUser == 'admin'}" class="menu-list nav-active"><a href="">
+                    <i class="fa fa-bullhorn"></i> <span>用户管理</span></a>
+                    <ul class="sub-menu-list">
+                        <li class="active"><a th:href="@{/userManagements}">修改用户信息</a></li>
+                    </ul>
+                </li>
+                <li th:unless="${session.loginUser == 'admin'}" class="menu-list nav-active"><a href="">
+                    <i class="fa fa-bullhorn"></i> <span>个人信息</span></a>
+                    <ul class="sub-menu-list">
+                        <li class="active"><a th:href="@{/personalMassage}">修改用户信息</a></li>
+                    </ul>
+                </li>
+                <li><a th:href="@{/search(pn=1)}"><i class="fa fa-cogs"></i> 药材信息管理</a></li>
+                </li>
+
+            </ul>
+            <!--sidebar nav end-->
+
+        </div>
+    </div>
+    <!-- left side end-->
+    
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <!-- header section start-->
+        <div th:replace="common :: headermenu"></div>
+        <!-- header section end-->
+
+        <!-- page heading start-->
+        <div class="page-heading">
+            <h3>
+                修改用户信息
+            </h3>
+            <ul class="breadcrumb">
+                <li>
+                    <a th:href="@{/main}">主页</a>
+                </li>
+                <li class="active">用户管理</li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start-->
+        <section class="wrapper">
+        <!-- page start-->
+
+        <div class="row">
+            <section class="panel">
+                <header class="panel-heading">
+                    修改用户信息
+                </header>
+                <div class="panel-body">
+                    <form class="form-signin" th:action="@{/editUser}" method="post">
+                        <div class="login-wrap">
+                            <label>用户名：</label>
+                            <input type="text" name="username" autofocus placeholder="用户名" th:value="${user.username}" class="form-control">
+                            <span class="error-message" id="username-error"></span><br>
+                            <label>密码：</label>
+                            <input type="text" name="password" placeholder="密码" th:value="${user.password}" class="form-control">
+                            <span class="error-message" id="password-error"></span><br>
+
+                            <label>年龄：</label>
+                            <input type="text" name="age" placeholder="年龄" th:value="${user.age}" class="form-control">
+                            <span class="error-message" id="age-error"></span><br>
+
+                            <label>电话号码：</label>
+                            <input type="text" name="phoneNumber" placeholder="电话号码" th:value="${user.phoneNumber}" class="form-control">
+                            <span class="error-message" id="phone-error"></span><br>
+
+                            <label>邮箱：</label>
+                            <input type="text" name="email" placeholder="邮箱" th:value="${user.email}" class="form-control">
+                            <span class="error-message" id="email-error"></span>
+
+                            <button type="submit" class="btn btn-lg btn-login btn-block">确认修改</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const form = document.querySelector('.form-signin');
+                    form.addEventListener('submit', function (event) {
+                        // 防止表单默认提交
+                        event.preventDefault();
+
+                        let hasError = false;
+
+                        // 获取输入值
+                        const username = document.querySelector('input[name="username"]').value;
+                        const password = document.querySelector('input[name="password"]').value;
+                        const age = parseInt(document.querySelector('input[name="age"]').value, 10);
+                        const email = document.querySelector('input[name="email"]').value;
+                        const phone = document.querySelector('input[name="phoneNumber"]').value;
+                        // 验证用户名不能为空
+                        if (!username) {
+                            document.getElementById('username-error').textContent = '用户名不能为空';
+                            hasError = true;
+                        } else {
+                            document.getElementById('username-error').textContent = '';
+                        }
+
+                        // 验证密码不能为空
+                        if (!password) {
+                            document.getElementById('password-error').textContent = '密码不能为空';
+                            hasError = true;
+                        } else {
+                            document.getElementById('password-error').textContent = '';
+                        }
+
+                        // 验证年龄必须在20到65岁之间
+                        if (isNaN(age) || age < 20 || age > 65) {
+                            document.getElementById('age-error').textContent = '年龄必须在20到65岁之间';
+                            hasError = true;
+                        } else {
+                            document.getElementById('age-error').textContent = '';
+                        }
+
+                        // 验证电话号码为以1开头的11位数字
+                        const phonePattern = /^1\d{10}$/;
+                        if (!phonePattern.test(phone)) {
+                            document.getElementById('phone-error').textContent = '电话号码必须为以1开头的11位数字';
+                            hasError = true;
+                        } else {
+                            document.getElementById('phone-error').textContent = '';
+                        }
+
+                        // 验证邮箱格式
+                        const emailPattern = /^[\w-]+@([a-zA-Z]+\.)+[a-zA-Z]+$/;
+                        if (!emailPattern.test(email)) {
+                            document.getElementById('email-error').textContent = '邮箱格式不正确';
+                            hasError = true;
+                        } else {
+                            document.getElementById('email-error').textContent = '';
+                        }
+
+                        // 如果没有错误，提交表单
+                        if (!hasError) {
+                            form.submit();
+                        }
+                    });
+                });
+            </script>
+
+            <!-- page end-->
+        </section>
+        <!--body wrapper end-->
+
+        <!--footer section start-->
+        <div th:replace="common :: #footer"></div>
+        <!--footer section end-->
+
+
+    </div>
+    <!-- main content end-->
+</section>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<div th:replace="common :: #commonscript"></div>
+
+</body>
+</html>

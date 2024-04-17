@@ -1,0 +1,81 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="herbal-management:war exploded">
+    <output-path>$PROJECT_DIR$/herbal-management/target/herbal-management-0.0.1-SNAPSHOT</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <exploded>true</exploded>
+        <module>herbal-management</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="herbal-management" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-web:3.2.4" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter:3.2.4" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-logging:3.2.4" />
+          <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:1.4.14" />
+          <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.4.14" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-to-slf4j:2.21.1" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.21.1" />
+          <element id="library" level="project" name="Maven: org.slf4j:jul-to-slf4j:2.0.12" />
+          <element id="library" level="project" name="Maven: jakarta.annotation:jakarta.annotation-api:2.1.1" />
+          <element id="library" level="project" name="Maven: org.yaml:snakeyaml:2.2" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-json:3.2.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.15.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.15.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.15.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.15.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.15.4" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-tomcat:3.2.4" />
+          <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:10.1.19" />
+          <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-el:10.1.19" />
+          <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-websocket:10.1.19" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:6.1.5" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:6.1.5" />
+          <element id="library" level="project" name="Maven: io.micrometer:micrometer-observation:1.12.4" />
+          <element id="library" level="project" name="Maven: io.micrometer:micrometer-commons:1.12.4" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:6.1.5" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:6.1.5" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:6.1.5" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:6.1.5" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-thymeleaf:3.2.4" />
+          <element id="library" level="project" name="Maven: org.thymeleaf:thymeleaf-spring6:3.1.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.thymeleaf:thymeleaf:3.1.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.attoparser:attoparser:2.0.7.RELEASE" />
+          <element id="library" level="project" name="Maven: org.unbescape:unbescape:1.1.6.RELEASE" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:2.0.12" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot:3.2.4" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-autoconfigure:3.2.4" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:6.1.5" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jcl:6.1.5" />
+          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.28" />
+          <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.11.4" />
+          <element id="library" level="project" name="Maven: com.baomidou:mybatis-plus-spring-boot3-starter:3.5.5" />
+          <element id="library" level="project" name="Maven: com.baomidou:mybatis-plus:3.5.5" />
+          <element id="library" level="project" name="Maven: com.baomidou:mybatis-plus-core:3.5.5" />
+          <element id="library" level="project" name="Maven: com.baomidou:mybatis-plus-annotation:3.5.5" />
+          <element id="library" level="project" name="Maven: com.baomidou:mybatis-plus-extension:3.5.5" />
+          <element id="library" level="project" name="Maven: com.github.jsqlparser:jsqlparser:4.6" />
+          <element id="library" level="project" name="Maven: org.mybatis:mybatis-spring:3.0.3" />
+          <element id="library" level="project" name="Maven: com.baomidou:mybatis-plus-spring-boot-autoconfigure:3.5.5" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-jdbc:3.2.4" />
+          <element id="library" level="project" name="Maven: com.zaxxer:HikariCP:5.0.1" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:6.1.5" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-tx:6.1.5" />
+          <element id="library" level="project" name="Maven: org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3" />
+          <element id="library" level="project" name="Maven: org.mybatis.spring.boot:mybatis-spring-boot-autoconfigure:3.0.3" />
+          <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.5.14" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/herbal-management/target/herbal-management-0.0.1-SNAPSHOT/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="herbal-management/web/Web" />
+    </root>
+  </artifact>
+</component>

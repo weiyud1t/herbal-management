@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" href="#" type="image/png">
+
+    <title>logon</title>
+
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet">
+
+    <style>
+        .error-message {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <!-- 验证内容合理性 -->
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function validateInput() {
+                let isValid = true;
+                if ($('input[name="username"]').val() === "") {
+                    $("#username-error").text("用户名不能为空。");
+                    isValid = false;
+                } else {
+                    $("#username-error").text("");
+                }
+                if ($('input[name="password"]').val() === "") {
+                    $("#password-error").text("密码不能为空。");
+                    isValid = false;
+                } else {
+                    $("#password-error").text("");
+                }
+                var password = $('input[name="password"]').val();
+                var confirmPassword = $('input[type="password"]:eq(1)').val();
+                if (confirmPassword === "") {
+                    $("#confirm-password-error").text("确认密码不能为空。");
+                    isValid = false;
+                } else if (confirmPassword !== password) {
+                    $("#confirm-password-error").text("密码和确认密码不一致。");
+                    isValid = false;
+                } else {
+                    $("#confirm-password-error").text("");
+                }
+                var age = $('input[name="age"]').val();
+                if (!(age >= 20 && age <= 65)) {
+                    $("#age-error").text("年龄必须在20到65岁之间。");
+                    isValid = false;
+                } else {
+                    $("#age-error").text("");
+                }
+                var phoneNumber = $('input[name="phoneNumber"]').val();
+                if (!/^1\d{10}$/.test(phoneNumber)) {
+                    $("#phone-error").text("电话号码必须是以1开头的11位数字。");
+                    isValid = false;
+                } else {
+                    $("#phone-error").text("");
+                }
+                var email = $('input[name="email"]').val();
+                if (!/^[\w-]+@([a-zA-Z]+\.)+[a-zA-Z]+$/.test(email)) {
+                    // ^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$
+                    $("#email-error").text("邮箱格式不正确。");
+                    isValid = false;
+                } else {
+                    $("#email-error").text("");
+                }
+
+                return isValid;
+            }
+            // 绑定表单的submit事件
+            $(".form-signin").submit(function(event) {
+                // 执行验证
+                if (!validateInput()) {
+                    // 如果有错误，阻止表单提交
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+</head>
+<body class="login-body">
+<div class="container">
+    <form class="form-signin" th:action="@{/addUser}" method="post">
+        <div class="form-signin-heading text-center">
+            <h1 class="sign-title">注册</h1>
+            <img src="images/logo_icon.png"/>
+        </div>
+        <div class="login-wrap">
+            <label>用户名：</label>
+            <input type="text" name="username" autofocus placeholder="用户名" class="form-control">
+            <span class="error-message" id="username-error"></span><br>
+            <label>密码：</label>
+            <input type="password" name="password" placeholder="密码" class="form-control">
+            <span class="error-message" id="password-error"></span><br>
+            <label>确认密码：</label>
+            <input type="password" placeholder="确认密码" class="form-control">
+            <span class="error-message" id="confirm-password-error"></span><br>
+            <label>年龄：</label>
+            <input type="text" name="age" placeholder="年龄" class="form-control">
+            <span class="error-message" id="age-error"></span><br>
+            <label>电话号码：</label>
+            <input type="text" name="phoneNumber" placeholder="电话号码" class="form-control">
+            <span class="error-message" id="phone-error"></span><br>
+            <label>邮箱：</label>
+            <input type="text" name="email" placeholder="邮箱" class="form-control">
+            <span class="error-message" id="email-error"></span>
+
+            <button type="submit" class="btn btn-lg btn-login btn-block">完成注册</button>
+        </div>
+    </form>
+</div>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/modernizr.min.js"></script>
+
+</body>
+</html>

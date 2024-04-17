@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="commonhead">
+
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/style-responsive.css" rel="stylesheet">
+
+  <style>
+    #id1{
+      color: #e28d2b;
+      font-size: 25px;
+    }
+  </style>
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="js/html5shiv.js"></script>
+  <script src="js/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <!-- left side start-->
+  <div id="leftmenu" class="left-side sticky-left-side" >
+
+  <!--logo and iconic logo start-->
+  <div class="logo">
+    <a th:href="@{/main}"><img src="images/logo_icon.png"></a>
+  </div>
+
+  <div class="left-side-inner">
+
+    <ul class="nav nav-pills nav-stacked custom-nav">
+      <li class="active"><a th:href="@{/main}">
+        <i class="fa fa-home"></i>
+        <span>主页</span></a>
+      </li>
+
+      <li th:if="${session.loginUser == 'admin'}"><a th:href="@{/userManagements}"><i class="fa fa-bullhorn"></i><span>用户管理</span></a></li>
+      <li th:unless="${session.loginUser == 'admin'}"><a th:href="@{/personalMassage}"><i class="fa fa-bullhorn"></i><span>个人信息</span></a></li>
+      <li><a th:href="@{/search(pn=1)}"><i class="fa fa-cogs"></i> 药材信息管理</a></li>
+      </li>
+
+    </ul>
+    <!--sidebar nav end-->
+
+  </div>
+</div>
+  <!-- left side end-->
+
+  <!-- header section start-->
+  <div th:fragment="headermenu" class="header-section">
+    <span id="id1">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+      &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+      欢迎使用中草药销售管理系统</span>
+
+    <!--notification menu start -->
+    <div class="menu-right">
+      <ul class="notification-menu">
+        <li>
+          <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            [[${session.loginUser}]]
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+            <li><a href="#" id="switchAccount"><i class="fa fa-cog"></i> 切换账号</a></li>
+            <li><a href="/"><i class="fa fa-sign-out"></i>退出登录</a></li>
+          </ul>
+
+          <script>
+            document.getElementById('switchAccount').addEventListener('click', function(e) {
+              e.preventDefault(); // 阻止链接跳转
+              var form = document.createElement('form');
+              form.method = 'POST';
+              form.action = '/reLogin'; // 后端期望接收POST请求的URL
+              // 创建隐藏的input来存储 'set' 参数的值
+              var hiddenField = document.createElement('input');
+              hiddenField.type = 'hidden';
+              hiddenField.name = 'set';
+              hiddenField.value = '0';
+              // 将隐藏的input添加到form中
+              form.appendChild(hiddenField);
+              document.body.appendChild(form);
+              form.submit();
+            });
+          </script>
+        </li>
+      </ul>
+    </div>
+    <!--notification menu end -->
+
+  </div>
+  <!-- header section end-->
+
+  <footer id="footer">
+    2024 &copy; 中草药管理系统 </a>
+  </footer>
+
+  <div id="commonscript">
+    <!-- Placed js at the end of the document so the pages load faster -->
+    <script th:src="@{/js/jquery-1.10.2.min.js}"></script>
+    <script th:src="@{/js/jquery-ui-1.9.2.custom.min.js}"></script>
+    <script th:src="@{/js/jquery-migrate-1.2.1.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/modernizr.min.js}"></script>
+    <script th:src="@{/js/jquery.nicescroll.js}"></script>
+    <!--common scripts for all pages-->
+    <script th:src="@{/js/scripts.js}"></script>
+  </div>
+
+</body>
+</html>

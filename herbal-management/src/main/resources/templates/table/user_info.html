@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+  <link rel="shortcut icon" href="#" type="image/png">
+
+  <title>Profile</title>
+
+    <link th:include="common :: commonhead">
+
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <!-- left side start-->
+    <div class="left-side sticky-left-side" >
+
+        <!--logo and iconic logo start-->
+        <div class="logo">
+            <a th:href="@{/main}"><img src="images/logo_icon.png" alt=""></a>
+        </div>
+
+        <div class="left-side-inner">
+
+            <ul class="nav nav-pills nav-stacked custom-nav">
+                <li><a th:href="@{/main}">
+                    <span>主页</span></a>
+                </li>
+                <li th:if="${session.loginUser == 'admin'}" class="active"><a th:href="@{/userManagements}"><i class="fa fa-bullhorn"></i><span>用户管理</span></a></li>
+                <li th:unless="${session.loginUser == 'admin'}" class="active"><a th:href="@{/personalMassage}"><i class="fa fa-bullhorn"></i><span>个人信息</span></a></li>
+                <li><a th:href="@{/search(pn=1)}"><i class="fa fa-cogs"></i> 药材信息管理</a></li>
+                </li>
+
+            </ul>
+            <!--sidebar nav end-->
+
+        </div>
+    </div>
+    <!-- left side end-->
+    
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <!-- header section start-->
+        <div th:replace="common :: headermenu"></div>
+        <!-- header section end-->
+
+        <!-- page heading start-->
+        <div class="page-heading">
+            <h3>
+                用户信息
+            </h3>
+            <ul class="breadcrumb">
+                <li>
+                    <a th:href="@{/main}">主页</a>
+                </li>
+                <li class="active">个人信息</li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start-->
+        <div class="wrapper">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <div class="profile-pic text-center">
+                                        <img alt="" src="images/gallery/image1.png">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <ul class="p-info">
+                                        <li>
+                                            <div class="title">用户名</div>
+                                            <div class="desk" th:text="${user.getUsername()}">Male</div>
+                                        </li>
+                                        <li>
+                                            <div class="title">手机号</div>
+                                            <div class="desk" th:text="${user.getPhoneNumber()}">ABC Inc.</div>
+                                        </li>
+                                        <li>
+                                            <div class="title">年龄</div>
+                                            <div class="desk" th:text="${user.getAge()}">BSC. in CSE</div>
+                                        </li>
+                                        <li>
+                                            <div class="title">邮箱</div>
+                                            <div class="desk" th:text="${user.getEmail()}">50+</div>
+                                        </li>
+                                    </ul>
+                                    <a th:href="@{/editUser(username=${session.loginUser})}" class="btn btn-primary">修改</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--body wrapper end-->
+
+        <!--footer section start-->
+        <div th:replace="common :: #footer"></div>
+        <!--footer section end-->
+
+
+    </div>
+    <!-- main content end-->
+</section>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<div th:replace="common :: #commonscript"></div>
+
+<!--Sparkline Chart-->
+<script src="js/sparkline/jquery.sparkline.js"></script>
+<script src="js/sparkline/sparkline-init.js"></script>
+
+</body>
+</html>

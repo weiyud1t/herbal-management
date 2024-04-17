@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="herbal-management:war">
+    <output-path>$PROJECT_DIR$/herbal-management/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>herbal-management</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="herbal-management-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="herbal-management:war exploded" />
+    </root>
+  </artifact>
+</component>

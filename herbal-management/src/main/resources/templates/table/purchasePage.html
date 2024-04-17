@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+  <link rel="shortcut icon" href="#" type="image/png">
+
+  <title>Form Layouts</title>
+
+  <link th:include="common :: commonhead">
+</head>
+
+<body class="sticky-header">
+
+<section>
+  <!-- left side start-->
+  <div class="left-side sticky-left-side">
+
+    <!--logo and iconic logo start-->
+    <div class="logo">
+      <a th:href="@{/main}"><img src="images/logo_icon.png" alt=""></a>
+    </div>
+
+    <div class="left-side-inner">
+
+      <ul class="nav nav-pills nav-stacked custom-nav">
+        <li><a th:href="@{/main}">
+          <span>主页</span></a>
+        </li>
+        <li th:if="${session.loginUser == 'admin'}"><a th:href="@{/userManagements}"><i class="fa fa-bullhorn"></i><span>用户管理</span></a></li>
+        <li th:unless="${session.loginUser == 'admin'}"><a th:href="@{/personalMassage}"><i class="fa fa-bullhorn"></i><span>个人信息</span></a></li>
+        <li class="menu-list nav-active"><a href=""><i class="fa fa-cogs"></i> <span>中药材管理</span></a>
+          <ul class="sub-menu-list">
+            <li><a th:href="@{/search(pn=1)}"> 药材信息管理</a></li>
+            <li class="active"><a href=""> 进货</a></li>
+          </ul>
+        </li>
+
+      </ul>
+      <!--sidebar nav end-->
+
+    </div>
+  </div>
+  <!-- left side end-->
+
+  <!-- main content start-->
+  <div class="main-content" >
+
+    <!-- header section start-->
+    <div th:replace="common :: headermenu"></div>
+    <!-- header section end-->
+
+    <!-- page heading start-->
+    <div class="page-heading">
+      <h3>
+        进货
+      </h3>
+      <ul class="breadcrumb">
+        <li>
+          <a th:href="@{/main}">主页</a>
+        </li>
+        <li class="active">中药材管理</li>
+      </ul>
+    </div>
+    <!-- page heading end-->
+
+    <!--body wrapper start-->
+    <section class="wrapper">
+      <!-- page start-->
+
+      <div class="row">
+        <div class="col-lg-6">
+          <section class="panel">
+            <header class="panel-heading">
+              进货
+            </header>
+            <div class="panel-body">
+              <form role="form" th:action="@{/purchase}" method="post">
+                <input type="hidden" name="id" th:value="${herb.id}" />
+                <div class="form-group">
+                  <label>药材名称:</label>
+                  <input type="text" class="form-control" th:value="${herb.herbName}" disabled>
+                </div>
+                <div class="form-group">
+                  <label>产地:</label>
+                  <input type="text" class="form-control" th:value="${herb.origin}" disabled>
+                </div>
+                <div class="form-group">
+                  <label>库存数量:</label>
+                  <input type="text" class="form-control" th:value="${herb.stockQuantity}" disabled>
+                </div>
+                <div class="form-group">
+                  <label>进货数量:</label>
+                  <input type="number" class="form-control" id="quantity" name="quantity" min="1" required placeholder="请输入进货数量">
+                  <span id="quantityError" style="color: red;"></span> <!-- 错误信息显示区域 -->
+                </div>
+                <button type="submit" class="btn btn-primary">确认进货</button>
+              </form>
+              <script>
+                document.getElementById('quantity').addEventListener('blur', function() {
+                  var input = this.value;
+                  var errorSpan = document.getElementById('quantityError');
+                  if (!/^[1-9]\d*$/.test(input)) {
+                    errorSpan.textContent = '请输入有效的进货数量（正整数）'; // 显示错误信息
+                  } else {
+                    errorSpan.textContent = ''; // 清除错误信息
+                  }
+                });
+              </script>
+            </div>
+          </section>
+        </div>
+      </div>
+      <!-- page end-->
+    </section>
+    <!--body wrapper end-->
+
+    <!--footer section start-->
+    <div th:replace="common :: #footer"></div>
+    <!--footer section end-->
+
+
+  </div>
+  <!-- main content end-->
+</section>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<div th:replace="common :: #commonscript"></div>
+
+</body>
+</html>

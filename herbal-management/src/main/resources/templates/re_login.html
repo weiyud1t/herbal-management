@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" href="#" type="image/png">
+
+    <title>Lock Screen</title>
+
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet">
+
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+
+    <style>
+        .error {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+
+    </style>
+</head>
+
+<body class="lock-screen">
+
+<div class="lock-wrapper">
+    <div class="panel lock-box text-center">
+        <div class="locked" align="center">
+            <i class="fa fa-lock"></i>
+        </div>
+        <div class="row">
+            <form id="loginForm" th:action="@{/login}" method="post" class="form-signin" role="form">
+                <input type="hidden" name="set" value="0">
+                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <input type="text" name="username" id="username" class="form-control lock-input" placeholder="请输入用户名" autofocus>
+                    <input type="password" name="password" id="password" class="form-control lock-input" placeholder="请输入密码">
+                    <label style="color: red" th:text="${msg}"></label>
+                    <button class="btn btn-lg btn-login btn-block" type="submit">
+                        <i class="fa fa-check"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <a th:href="@{/main}" type="button" class="btn btn-lg btn-login btn-block">返回首页</a>
+    </div>
+</div>
+
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/modernizr.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="keywords" content="admin, dashboard, bootstrap, template, flat, modern, theme, responsive, fluid, retina, backend, html5, css, css3">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+  <link rel="shortcut icon" href="#" type="image/png">
+
+  <title>中草药管理系统</title>
+
+  <!--icheck-->
+  <link href="js/iCheck/skins/minimal/minimal.css" rel="stylesheet">
+  <link href="js/iCheck/skins/square/square.css" rel="stylesheet">
+  <link href="js/iCheck/skins/square/red.css" rel="stylesheet">
+  <link href="js/iCheck/skins/square/blue.css" rel="stylesheet">
+
+  <!--dashboard calendar-->
+  <link href="css/clndr.css" rel="stylesheet">
+
+  <!--Morris Chart CSS -->
+  <link rel="stylesheet" href="js/morris-chart/morris.css">
+
+    <link th:include="common :: commonhead">
+
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <!-- left side start-->
+    <div th:replace="common :: #leftmenu"></div>
+    <!-- left side end-->
+    
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <!-- header section start-->
+        <div th:replace="common :: headermenu"></div>
+        <!-- header section end-->
+
+        <!-- page heading start-->
+        <div class="page-heading">
+            <h3>主页</h3>
+            <ul class="breadcrumb">
+                <li class="active">主页</li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start-->
+        <div class="wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            项目介绍
+                        </header>
+                        <div class="panel-body">
+                            <div id="editor-container">
+                                <div id="header-editor">
+                                    <div id="headerLeft">
+                                        <h2 id="sampleTitle" contenteditable="true"
+                                            class="cke_editable cke_editable_inline cke_contents_ltr"
+                                            tabindex="0" spellcheck="false" role="textbox"
+                                            aria-label="所见即所得编辑器, sampleTitle" title="所见即所得编辑器, sampleTitle"
+                                            aria-describedby="cke_254" style="position: relative;">
+                                            中草药销售管理系统</h2>
+                                        <h4 contenteditable="true" class="cke_editable cke_editable_inline cke_contents_ltr"
+                                            tabindex="0" spellcheck="false" role="textbox"
+                                            aria-label="所见即所得编辑器, editor6" title="所见即所得编辑器, editor6"
+                                            aria-describedby="cke_287" style="position: relative;">
+                                            &emsp;本项目实现了对中草药的管理和销售，可以对中草药信息进行添加、删除、修改和查询操作，还有对中草药进行购买和入库操作。
+                                            同时，对登录本系统的用户进行了权限判断，是否为管理员或普通用户，其中管理员权限能对中草药管理进行更多操作，
+                                            还有对注册的所有用户进行管理；普通用户只有购买操作、查看和修改个人信息。</h4>
+                                    </div>
+                                </div>
+                                <div id="columns">
+                                    <div id="column1">
+                                        <div contenteditable="true" class="cke_editable cke_editable_inline cke_contents_ltr"
+                                             tabindex="0" spellcheck="false" role="textbox"
+                                             aria-label="所见即所得编辑器, editor2" title="所见即所得编辑器, editor2"
+                                             aria-describedby="cke_95" style="position: relative;"><h2>技术栈</h2>
+                                            <h3><strong>java17+spring+springMVC+springboot+mybatis+maven</strong></h3>
+                                            <blockquote><p>Spring是轻量级的开源的JavaEE框架
+                                                ，可以解决应用开发的复杂性</p></blockquote>
+                                            <blockquote><p>SpringMVC是Spring为表述层开发提供的一整套完备的解决方案。</p></blockquote>
+                                            <blockquote><p>springboot能快速创建出生产级别的Spring应用。</p></blockquote>
+                                            <blockquote><p>MyBatis支持定制化 SQL、存储过程以及高级映射的优秀的持久层框架
+                                                ，避免了几乎所有的JDBC代码和手动设置参数以及获取结果集</p></blockquote>
+                                            <blockquote><p>Maven是一个依赖管理工具。使用Maven后，
+                                                依赖对应的jar包能够自动下载，方便、快捷又规范。</p></blockquote>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <!--body wrapper end-->
+
+        <!--footer section start-->
+        <div th:replace="common :: #footer"></div>
+        <!--footer section end-->
+
+    </div>
+    <!-- main content end-->
+</section>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<div th:replace="common :: #commonscript"></div>
+
+<!--easy pie chart-->
+<script src="js/easypiechart/jquery.easypiechart.js"></script>
+<script src="js/easypiechart/easypiechart-init.js"></script>
+
+<!--Sparkline Chart-->
+<script src="js/sparkline/jquery.sparkline.js"></script>
+<script src="js/sparkline/sparkline-init.js"></script>
+
+<!--icheck -->
+<script src="js/iCheck/jquery.icheck.js"></script>
+<script src="js/icheck-init.js"></script>
+
+<!-- jQuery Flot Chart-->
+<script src="js/flot-chart/jquery.flot.js"></script>
+<script src="js/flot-chart/jquery.flot.tooltip.js"></script>
+<script src="js/flot-chart/jquery.flot.resize.js"></script>
+
+
+<!--Morris Chart-->
+<script src="js/morris-chart/morris.js"></script>
+<script src="js/morris-chart/raphael-min.js"></script>
+
+<!--Calendar-->
+<script src="js/calendar/clndr.js"></script>
+<script src="js/calendar/evnt.calendar.init.js"></script>
+<script src="js/calendar/moment-2.2.1.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+
+<!--Dashboard Charts-->
+<script src="js/dashboard-chart-init.js"></script>
+
+
+</body>
+</html>

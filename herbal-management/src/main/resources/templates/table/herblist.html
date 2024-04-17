@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" href="#" type="image/png">
+
+    <title>Editable Table</title>
+
+    <!--data table-->
+    <link rel="stylesheet" href="js/data-tables/DT_bootstrap.css"/>
+
+    <link th:include="common :: commonhead">
+
+</head>
+
+<body class="sticky-header">
+<section>
+    <!-- left side start-->
+    <div class="left-side sticky-left-side">
+
+        <!--logo and iconic logo start-->
+        <div class="logo">
+            <a th:href="@{/main}"><img src="images/logo_icon.png" alt=""></a>
+        </div>
+
+        <div class="left-side-inner">
+
+            <ul class="nav nav-pills nav-stacked custom-nav">
+                <li><a th:href="@{/main}">
+                    <span>主页</span></a>
+                </li>
+                <li th:if="${session.loginUser == 'admin'}"><a th:href="@{/userManagements}"><i class="fa fa-bullhorn"></i><span>用户管理</span></a></li>
+                <li th:unless="${session.loginUser == 'admin'}"><a th:href="@{/personalMassage}"><i class="fa fa-bullhorn"></i><span>个人信息</span></a></li>
+                <li class="active"><a th:href="@{/search(pn=1)}"><i class="fa fa-cogs"></i> 药材信息管理</a></li>
+                </li>
+
+            </ul>
+            <!--sidebar nav end-->
+
+        </div>
+    </div>
+    <!-- left side end-->
+
+    <!-- main content start-->
+    <div class="main-content">
+
+        <!-- header section start-->
+        <div th:replace="common :: headermenu"></div>
+        <!-- header section end-->
+
+        <!-- page heading start-->
+        <div class="page-heading">
+            <h3>
+                药材信息管理
+            </h3>
+            <ul class="breadcrumb">
+                <li>
+                    <a th:href="@{/main}">主页</a>
+                </li>
+                <li class="active">中药材管理</li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start-->
+        <div id="app" class="wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="adv-table editable-table ">
+                                <div class="space15"></div>
+                                <div class="form-group" style="justify-content: center">
+                                    <div class="col-lg-9">
+                                        <div class="input-group m-bot15">
+                                            <form th:action="@{/search}" method="get">
+                                                <input type="hidden" name="pn" value="1">
+                                               <span class="input-group-btn" style="width: 300px">
+                                                <input type="number" name="id" class="form-control" placeholder="输入药材id">
+                                                <button type="submit" class="btn btn-default">搜索</button>
+                                               </span>
+                                            </form>
+                                        </div>
+                                        <!-- 显示错误消息 -->
+                                        <div th:if="${errorMessage}" th:text="${errorMessage}" style="color: red"></div>
+                                    </div>
+                                    <!-- 添加按钮 -->
+                                    <a class="btn btn-success" th:href="@{/function(set=0)}" th:if="${session.loginUser == 'admin'}" type="button">添加</a>
+                                </div>
+                                <table class="table table-striped table-hover table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>id</th>
+                                        <th>药材名称</th>
+                                        <th>产地</th>
+                                        <th>功效</th>
+                                        <th>库存数量</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="gradeX" th:each="herb,stat:${herbs}" th:if="${herb.herbName != null}">
+                                        <td th:text="${stat.count}"></td>
+                                        <td th:text="${herb.id}"></td>
+                                        <td th:text="${herb.herbName}"></td>
+                                        <td th:text="${herb.origin}"></td>
+                                        <td th:text="${herb.effects}"></td>
+                                        <td th:text="${herb.stockQuantity}" class="center">100</td>
+                                        <td>
+                                            <!-- 管理员登录显示的按钮 -->
+                                            <a style="color: white" class="btn btn-danger" th:href="@{/delete/{id}(id=${herb.id},pn=${pn})}" th:if="${session.loginUser == 'admin'}" type="button">删除</a>
+                                            <a style="color: white" id="btn-modify" type="button" class="btn btn-primary btn-modify" th:href="@{/function(id=${herb.id})}" th:if="${session.loginUser == 'admin'}">修改</a>
+                                            <a style="color: white" class="btn btn-info" th:href="@{/purchase(id=${herb.id})}" th:if="${session.loginUser == 'admin'}" type="button">进货</a>
+                                            <!-- 非管理员登录显示的按钮 -->
+                                            <button style="color: white" class="btn btn-success" th:if="${session.loginUser != 'admin'}" onclick="togglePurchaseInput(this)">购买</button>
+                                        </td>
+                                        <script>
+                                            function togglePurchaseInput(button) {
+                                                let input = button.previousElementSibling;
+                                                let cancelButton;
+                                                if (!input || input.type !== 'number') {
+                                                    // 如果之前没有输入框，则创建一个新的输入框
+                                                    input = document.createElement('input');
+                                                    input.type = 'number';
+                                                    input.style.display = 'none'; // 初始状态隐藏输入框
+                                                    input.setAttribute('min', '1'); // 设置最小值为1
+                                                    button.parentElement.insertBefore(input, button); // 将输入框插入按钮前面
+
+                                                    // 创建取消按钮
+                                                    cancelButton = document.createElement('button');
+                                                    cancelButton.textContent = '取消';
+                                                    cancelButton.className = 'btn btn-secondary';
+                                                    cancelButton.style.border = '1px solid black'; // 添加边框样式
+                                                    cancelButton.style.display = 'none'; // 初始状态隐藏取消按钮
+                                                    button.parentElement.insertBefore(cancelButton, button.nextSibling); // 将取消按钮插入购买按钮后面
+
+                                                    input.onblur = function() {
+                                                        // 当输入框失去焦点时，检查输入值
+                                                        let stock = parseInt(button.parentElement.parentElement.querySelector('.center').textContent, 10);
+                                                        let quantity = input.value;
+                                                        if (!/^[1-9]\d*$/.test(quantity)) {
+                                                            // 使用正则表达式检查输入是否为正整数
+                                                            alert('请输入一个大于0的整数');
+                                                            input.value = ''; // 清空输入框
+                                                            return;
+                                                        }
+                                                        quantity = parseInt(quantity, 10);
+                                                        if (quantity > stock) {
+                                                            // 检查是否超过库存
+                                                            alert('库存不足');
+                                                            input.value = ''; // 清空输入框
+                                                        }
+                                                    };
+
+                                                    // 取消按钮点击事件
+                                                    cancelButton.onclick = function() {
+                                                        input.style.display = 'none'; // 隐藏输入框
+                                                        cancelButton.style.display = 'none'; // 隐藏取消按钮
+                                                        button.textContent = '购买'; // 更改按钮文本为“购买”
+                                                    };
+                                                } else {
+                                                    cancelButton = button.nextElementSibling; // 获取已存在的取消按钮
+                                                }
+
+                                                if (input.style.display === 'none' || button.textContent === '购买') {
+                                                    input.style.display = 'block'; // 显示输入框
+                                                    cancelButton.style.display = 'inline-block'; // 显示取消按钮
+                                                    button.textContent = '确认购买'; // 更改按钮文本
+                                                } else {
+                                                    // 用户点击“确认购买”
+                                                    let quantity = input.value;
+                                                    if (/^[1-9]\d*$/.test(quantity)) {
+                                                        // 再次确认输入为正整数
+                                                        let form = document.createElement('form');
+                                                        form.method = 'POST';
+                                                        form.action = '/buy';
+
+                                                        let idInput = document.createElement('input');
+                                                        idInput.type = 'hidden';
+                                                        idInput.name = 'id';
+                                                        idInput.value = button.parentElement.parentElement.querySelector('td:nth-child(2)').textContent; // 药材ID
+
+                                                        let quantityInput = document.createElement('input');
+                                                        quantityInput.type = 'hidden';
+                                                        quantityInput.name = 'quantity';
+                                                        quantityInput.value = parseInt(quantity, 10); // 用户输入的购买数量
+
+                                                        form.appendChild(idInput);
+                                                        form.appendChild(quantityInput);
+
+                                                        document.body.appendChild(form); // 将表单添加到<body>
+                                                        form.submit(); // 提交表单
+                                                    } else {
+                                                        alert('请输入一个大于0的整数');
+                                                    }
+                                                }
+                                            }
+                                        </script>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="dataTables_info" id="editable-sample_info">当前第 [[${pn}]] 页
+                                        总计 [[${spn}]] 页 共 [[${sum}]] 条记录
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="" align="right">
+                                        <ul class="pagination">
+                                            <li>
+                                                <a th:href="@{/search(pn=${pn - 1},set=1)}" th:if="${pn>1}">«</a></li>
+                                            <li th:each="num:${#numbers.sequence(1,spn)}"
+                                                th:class="${num == pn ? 'active':''}">
+                                                <a th:href="@{/search(pn=${num},set=1)}">[[${num}]]</a>
+                                            </li>
+                                            <li>
+                                                <a th:href="@{/search(pn=${pn+1},set=1)}" th:if="${pn<spn}">»</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <!--body wrapper end-->
+
+        <!--footer section start-->
+        <div th:replace="common :: #footer"></div>
+        <!--footer section end-->
+
+    </div>
+    <!-- main content end-->
+</section>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<div th:replace="common :: #commonscript"></div>
+
+<!--data table-->
+<script type="text/javascript" src="js/data-tables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="js/data-tables/DT_bootstrap.js"></script>
+
+<!--script for editable table-->
+<script src="js/editable-table.js"></script>
+
+<!-- END JAVASCRIPTS -->
+<script>
+    jQuery(document).ready(function () {
+        EditableTable.init();
+    });
+    $(document).on('click', '.btn-modify', function(e) {
+        var herbId = $(this).attr('href').match(/id=(\d+)/)[1]; // 从链接中提取药材ID
+        sessionStorage.setItem('herbId', herbId); // 将药材ID存储在sessionStorage中
+    });
+</script>
+
+</body>
+</html>
